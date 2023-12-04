@@ -15,7 +15,6 @@ result = 0
 for gift in gifts:
   l,w,h = gift.split('x')
   ribbon = getMinPerimeter(int(l),int(w),int(h)) + getVolume(int(l),int(w),int(h))
-  # print(ribbon)
   result += ribbon
 
 print(result)
