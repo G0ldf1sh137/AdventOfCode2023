@@ -1,9 +1,10 @@
+from numpy import ndarray
 INPUT_PATH = './input.txt'
 
 with open(INPUT_PATH) as DATA:
     instructions = DATA.read().splitlines()
 
-lights_on = set()
+lights_on = ndarray(shape=(1000,1000), dtype=bool)
 
 def parse(s: str):
     inst_type = s[6]
@@ -20,7 +21,7 @@ def turnOn(r1: str, r2: str):
 
     for i in range(int(start_x), int(end_x) + 1):
         for j in range(int(start_y), int(end_y) + 1):
-            lights_on.add((i,j))
+            lights_on[i][j] = True
 
 def turnOff(r1, r2):
     start_x, start_y = r1.split(',')
@@ -28,8 +29,7 @@ def turnOff(r1, r2):
 
     for i in range(int(start_x), int(end_x) + 1):
         for j in range(int(start_y), int(end_y) + 1):
-            if (i, j) in lights_on:
-                lights_on.remove((i,j))
+            lights_on[i][j] = False
 
 def toggle(r1, r2):
     start_x, start_y = r1.split(',')
@@ -37,10 +37,7 @@ def toggle(r1, r2):
 
     for i in range(int(start_x), int(end_x) + 1):
         for j in range(int(start_y), int(end_y) + 1):
-            if (i, j) in lights_on:
-                lights_on.remove((i,j))
-            else:
-                lights_on.add((i,j))
+            lights_on[i][j] = not lights_on[i][j]
 
 for instruction in instructions:
     inst_type, r1, r2 = parse(instruction)
@@ -52,5 +49,6 @@ for instruction in instructions:
     elif inst_type == ' ':
         toggle(r1, r2)
     
-print(len(lights_on))
+result = len([light for light in lights_on.flatten() if light])
+print(result)
 
